@@ -4,7 +4,7 @@ const path = require('path');
 
 const dataPath = path.join(__dirname, '..', 'data', 'users.json');
 
-router.get('/', (req, res) => {
+router.all('/', (req, res) => {
   fs.readFile(dataPath, { encoding: 'utf-8' })
     .then((users) => {
       res.send({ data: users });
@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
     .catch(() => res.status(500).send({ message: 'An error has occured on the server' }));
 });
 
-router.get('/:id', (req, res) => {
+router.all('/:id', (req, res) => {
   const { id } = req.params;
   fs.readFile(dataPath, { encoding: 'utf-8' })
     .then((users) => {
