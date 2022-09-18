@@ -1,15 +1,21 @@
-const router = require('express').Router();
-const fs = require('fs').promises;
-const path = require('path');
+const router = require("express").Router();
+// const fs = require('fs').promises;
+// const path = require('path');
 
-const dataPath = path.join(__dirname, '..', 'data', 'cards.json');
+// const dataPath = path.join(__dirname, '..', 'data', 'cards.json');
 
-router.all('/', (req, res) => {
-  fs.readFile(dataPath, { encoding: 'utf-8' })
-    .then((cards) => {
-      res.send({ data: cards });
-    })
-    .catch(() => res.status(500).send({ message: 'An error has occured on the server' }));
-});
+// router.all('/', (req, res) => {
+//   fs.readFile(dataPath, { encoding: 'utf-8' })
+//     .then((cards) => {
+//       res.send({ data: cards });
+//     })
+//     .catch(() => res.status(500).send({ message: 'An error has occured on the server' }));
+// });
+
+router.get("/", getCards);
+router.post("/", createCard);
+router.delete("bid", deleteCard);
+router.put("/:id/likes", likeCard);
+router.delete("/:id/likes", dislikeCard);
 
 module.exports = { cardsRouter: router };
