@@ -1,4 +1,11 @@
 const router = require("express").Router();
+const {
+  createUser,
+  getUsers,
+  getUser,
+  updateUserAvatar,
+  updateUserInfo,
+} = require("../controllers/users");
 // const fs = require("fs").promises;
 // const path = require("path");
 

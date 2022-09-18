@@ -28,8 +28,13 @@ const createUser = (req, res) => {
     });
 };
 
+const updateUserInfo = (req, res) => {};
+const updateUserAvatar = (req, res) => {};
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
+  updateUserInfo,
+  updateUserAvatar,
 };
