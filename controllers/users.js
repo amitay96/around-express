@@ -1,7 +1,8 @@
 const User = require("../models/user");
 
 const getUsers = (req, res) => {
-  return User.find({}).then((users) => res.status(200).send(users));
+  return User.find({})
+    .then((users) => res.status(200).send(users));
 };
 
 const getUser = (req, res) => {
