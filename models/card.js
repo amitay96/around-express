@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const { urlRegex } = require('../utils/constants');
 
 const cardSchema = new mongoose.Schema(
   {
@@ -12,12 +13,25 @@ const cardSchema = new mongoose.Schema(
       type: String,
       required: [true, 'The "link" field must be filled in'],
       validate: {
-        validator: (value) => value.match(/^(https:|http:|www\.)\S*/gi),
+        validator: (value) => urlRegex.test(value),
         message: 'The "link" field must be a valid URL',
       },
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+      required: [true, 'The "Owner" field must be filled in.'],
+    },
+    likes: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+      default: [],
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  { versionKey: false }
+  { versionKey: false },
 );
 
-module.exports = mongoose.model("card", cardSchema);
+module.exports = mongoose.model('card', cardSchema);

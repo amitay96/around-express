@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const { urlRegex } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema(
   {
@@ -18,12 +19,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'The "avatar" field must be filled in'],
       validate: {
-        validator: (value) => value.match(/^(https:|http:|www\.)\S*/gi),
+        validator: (value) => urlRegex.test(value),
         message: 'The "avatar" field must be a valid URL',
       },
     },
   },
-  { versionKey: false }
+  { versionKey: false },
 );
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model('user', userSchema);
