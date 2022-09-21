@@ -1,9 +1,10 @@
 const Card = require('../models/card');
+const { customError } = require('../utils/errors');
 
 const getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
-    .catch(() => res.status(500).send({ message: 'An error occured' }));
+    .catch(() => customError(res, 500, 'An error occured'));
 };
 
 const createCard = (req, res) => {
@@ -24,7 +25,7 @@ const createCard = (req, res) => {
             .join(', ')}`,
         });
       } else {
-        res.status(500).send({ message: 'An error occured' });
+        customError(res, 500, 'An error occured on the server');
       }
     });
 };
@@ -41,11 +42,11 @@ const deleteCard = (req, res) => {
     .then((card) => res.send({ message: 'Card removed successfully', data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Invalid card id' });
+        customError(res, 400, 'Invalid card id');
       } else if (err.statusCode === 404) {
-        res.status(404).send({ message: err.message });
+        customError(res, 404, err.message);
       } else {
-        res.status(500).send({ message: 'An error occured' });
+        customError(res, 500, 'An error occured on the server');
       }
     });
 };
@@ -68,11 +69,11 @@ const updateLike = (req, res, method) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Invalid id' });
+        customError(res, 400, 'Invalid card id');
       } else if (err.statusCode === 404) {
-        res.status(404).send({ message: err.message });
+        customError(res, 404, err.message);
       } else {
-        res.status(500).send({ message: 'An error occured' });
+        customError(res, 500, 'An error occured');
       }
     });
 };

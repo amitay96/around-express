@@ -1,9 +1,10 @@
 const User = require('../models/user');
+const { customError } = require('../utils/errors');
 
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send({ data: users }))
-    .catch(() => res.status(500).send({ message: 'An error occured on the server' }));
+    .catch(() => customError(res, 500, 'An error occured'));
 };
 
 const getUser = (req, res) => {
@@ -11,7 +12,7 @@ const getUser = (req, res) => {
   User.findById(id)
     .orFail(() => {
       const error = new Error('User Not Found');
-      error.status = 404;
+      error.statusCode = 404;
       throw error;
     })
     .then((user) => {
@@ -19,11 +20,11 @@ const getUser = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Invalid card id' });
+        customError(res, 400, 'Invalid user id');
       } else if (err.statusCode === 404) {
-        res.status(404).send({ message: err.message });
+        customError(res, 404, err.message);
       } else {
-        res.status(500).send({ message: 'An error occured on the server' });
+        customError(res, 500, 'An error occured on the server');
       }
     });
 };
@@ -40,7 +41,7 @@ const createUser = (req, res) => {
             .join(', ')}`,
         });
       } else {
-        res.status(500).send({ message: 'An error occured' });
+        customError(res, 500, 'An error occured on the server');
       }
     });
 };
@@ -55,17 +56,17 @@ const updateUserData = (req, res) => {
   )
     .orFail(() => {
       const error = new Error('Invalid user id');
-      error.status = 404;
+      error.statusCode = 404;
       throw error;
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Invalid user id' });
+        customError(res, 400, 'Invalid user id');
       } else if (err.statusCode === 404) {
-        res.status(404).send({ message: err.message });
+        customError(res, 404, err.message);
       } else {
-        res.status(500).send({ message: 'An error occured on the server' });
+        customError(res, 500, 'An error occured on the server');
       }
     });
 };
@@ -74,9 +75,11 @@ const updateUserInfo = (req, res) => {
   const { name, about } = req.body;
 
   if (!name || !about) {
-    return res.status(400).send({
-      message: 'Both name and about fields are required, please update',
-    });
+    return customError(
+      res,
+      400,
+      'Both name and about fields are required, please update',
+    );
   }
   return updateUserData(req, res);
 };
@@ -85,7 +88,7 @@ const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
 
   if (!avatar) {
-    return res.status(400).send({ message: 'Avatar new URL link is required' });
+    return customError(res, 400, 'Avatar new URL link is required');
   }
   return updateUserData(req, res);
 };

@@ -1,21 +1,16 @@
 # Around the U.S. Back End
 
-## Directories
+## Overview
 
-`/data` — JSON files to temporarily emulate database integration.
-
-`/routes` — routing files.
-
-### Overview
-
-This project is going to be the back-end part of the "Around the US" project.
+This project is the back-end part of the "Around the US" project.
+Containing several databases for users and cards, with implemantation of server requests(PUT, POST, GET, DELETE, PATCH).
 
 ### Project features
 
 - Node.js
 - Express.js
-- Server requests
-- lint
+- MongoDB
+- Inputs validation
 - Routing
 
 ## Running the Project

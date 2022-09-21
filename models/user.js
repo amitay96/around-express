@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { urlRegex } = require('../utils/constants');
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'The "avatar" field must be filled in'],
       validate: {
-        validator: (value) => urlRegex.test(value),
+        validator: (value) => validator.isURL(value),
         message: 'The "avatar" field must be a valid URL',
       },
     },
